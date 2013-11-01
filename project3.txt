@@ -16,7 +16,9 @@ to it.
 As with prior projects, you are welcome and encouraged to work with someone
 else. Please make a comment in your code to indicate who you worked with or who
 you got help from. Project submission is the same as with past projects: you'll
-need to keep your code in ``git`` and submit the repository name.
+need to keep your code in ``git`` and submit the repository name.  To get
+started, fork the repo and clone it to your workspace, as usual.  When you're 
+done, just commit and push to your repo, and post your repo URL to Moodle.
 
 Overview of HTTP and Web requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
