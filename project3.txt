@@ -1,8 +1,8 @@
-COSC 301 Project 3, Fall 2012: Concurrent Web Server
+COSC 301 Project 4, Fall 2013: Concurrent Web Server
 ====================================================
 
-Due Friday, 9 November 2012
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Due Friday, 18 November 2013
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this project, you'll create a "thread pool" to handle incoming requests to a
 webserver. To do that, you'll need to implement a producer-consumer pattern to
