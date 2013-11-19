@@ -11,7 +11,7 @@
 #include <arpa/inet.h>
 
 #include "network.h"
-
+#include "datastructures.h"
 
 // global variable; can't be avoided because
 // of asynchronous signal interaction
@@ -19,7 +19,11 @@ int still_running = TRUE;
 void signal_handler(int sig) {
     still_running = FALSE;
 }
-
+request_t *head;
+request_t *tail;
+pthread_mutex_t queue_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t queue_cond = PTHREAD_COND_INITIALIZER;
+int queue_cnt;
 
 void usage(const char *progname) {
     fprintf(stderr, "usage: %s [-p port] [-t numthreads]\n", progname);
@@ -28,14 +32,26 @@ void usage(const char *progname) {
     exit(0);
 }
 
+void worker(void)
+{
+    Pthread_mutex_lock(&queue_lock);
+    while(queue_cnt < 1)
+        Pthread_cond_wait(&queue_cond, &queue_lock);
+    //do stuff
+    Pthread_mutex_unlock(&queue_lock);
+}
+
 void runserver(int numthreads, unsigned short serverport) {
     //////////////////////////////////////////////////
 
     // create your pool of threads here
 
     //////////////////////////////////////////////////
-    
-    
+    pthread_t threads[numthreads];
+    int i = 0;
+    for(;i < numthreads; i++)
+        pthread_create(&(threads[i]), NULL, (void *)worker, NULL);
+
     int main_socket = prepare_server_socket(serverport);
     if (main_socket < 0) {
         exit(-1);
@@ -66,7 +82,7 @@ void runserver(int numthreads, unsigned short serverport) {
             
             time_t now = time(NULL);
             fprintf(stderr, "Got connection from %s:%d at %s\n", inet_ntoa(client_address.sin_addr), ntohs(client_address.sin_port), ctime(&now));
-
+ 
            ////////////////////////////////////////////////////////
            /* You got a new connection.  Hand the connection off
             * to one of the threads in the pool to process the
@@ -76,8 +92,11 @@ void runserver(int numthreads, unsigned short serverport) {
             * when you're done.
             */
            ////////////////////////////////////////////////////////
-
-
+            Pthread_mutex_lock(&queue_lock);
+            queue_cnt++;
+            request_t_insert(/*filename*/, new_sock);\
+            Pthread_cond_signal(&queue_cond);
+            Pthread_mutex_unlock(&queue_lock);
         }
     }
     fprintf(stderr, "Server shutting down.\n");
