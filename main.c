@@ -189,10 +189,20 @@ void runserver(int numthreads, unsigned short serverport) {
         }
     }
     //join threads//////////////////////////////////////////////////////////
-    
-    fprintf(stderr, "Server shutting down.\n");
+	for (i = 0; i < numthreads; i++)
+	{
+		pthread_join(threads[i], NULL)
+	}
+	
+	pthread_cond_destroy(&queue_cond);
+	pthread_mutex_destroy(&queue_lock);
+	pthread_mutex_destroy(&log_lock);    
+
+	
+	fprintf(stderr, "Server shutting down.\n");
         
     close(main_socket);
+	fclose(weblog);
 }
 
 
