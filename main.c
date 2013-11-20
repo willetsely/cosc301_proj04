@@ -83,7 +83,7 @@ void worker(void)
             int filesize = statinfo->st_size;
 
             char filesizestr[10];   //cast filesize to string (char[])
-            sprintf(filesizestr, "%d", filesize)
+            sprintf(filesizestr, "%d", filesize);
 
             senddata(sock, (HTTP_200,filesize), strlen(HTTP_200,filesizestr));
             totalsize = strlen(HTTP_200) + strlen(filesizestr);
