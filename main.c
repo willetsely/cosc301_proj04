@@ -101,6 +101,7 @@ void worker(void)
                 return;
             }
             senddata(sock, read_buffer, filesize);
+            totalsize += filesize;
         }   
         else //file doens't exist
         {
@@ -110,8 +111,7 @@ void worker(void)
         }
 		
 		time_t now = time(NULL);
-		char *time = ctime(&now);
-        totalsize += filesize;		
+		char *time = ctime(&now);		
 
 		pthread_mutex_lock(&log_lock);
 		FILE *weblog = fopen("weblog.txt", "a");
@@ -132,7 +132,7 @@ void runserver(int numthreads, unsigned short serverport) {
     pthread_t threads[numthreads];
     int i = 0;
     for(;i < numthreads; i++)
-        pthread_create(&(threads[i]), NULL, worker(), NULL);
+        pthread_create(&(threads[i]), NULL, worker, NULL);
     //////////////////////////////////////////////////
 
     int main_socket = prepare_server_socket(serverport);
