@@ -76,14 +76,13 @@ void worker(void)
         struct stat statinfo;
         int success_code;
         int totalsize; //totalsize used for the log
-
-        if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
+        if(stat(filepath, &statinfo) == 0) //if stat succeeds i.e. file exists
         {
             success_code = 200;
-            int filesize = statinfo->st_size;
+            int filesize = statinfo.st_size;
 
             char filesizestr[10];   //cast filesize to string (char[])
-            sprintf(filesizestr, "%d", filesize)
+            sprintf(filesizestr, "%d", filesize);
 
             senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
             totalsize = strlen(HTTP_200) + strlen(filesizestr);
@@ -101,6 +100,7 @@ void worker(void)
                 return;
             }
             senddata(sock, read_buffer, filesize);
+			totalsize += filesize;
         }   
         else //file doens't exist
         {
@@ -111,7 +111,6 @@ void worker(void)
 		
 		time_t now = time(NULL);
 		char *time = ctime(&now);
-        totalsize += filesize;		
 
 		pthread_mutex_lock(&log_lock);
 		FILE *weblog = fopen("weblog.txt", "a");
