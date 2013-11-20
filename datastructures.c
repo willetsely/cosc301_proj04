@@ -1,4 +1,3 @@
-#include "main.c"
 //include a bunch of stuff
 
 //declare global variables
@@ -38,7 +37,8 @@ request_t *request_t_remove()
     }
     else    //if head == tail: only one request in the list
     {
-        free(head);
+        head = NULL;
+        free(tail);
         temp = NULL;
     }
     return temp;
