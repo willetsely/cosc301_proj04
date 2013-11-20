@@ -8,11 +8,11 @@
 #include <unistd.h>
 #include <errno.h>
 
-struct request {
-    char *filename;
-    int socket;
-    //log entry
-    request_t *next;
-} request_t
+typedef struct request {
+    int sock;
+    int port;
+    char *ip_add;
+    struct request *next;
+} request_t;
 
 #endif // __DATASTRUCTURES_H__
