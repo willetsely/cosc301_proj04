@@ -51,7 +51,7 @@ void *worker(void *bs)
 {
     char cwd[1024];
     getcwd(cwd,1024); //current working directory
-    while(1)
+    while(still_running)
     {
         pthread_mutex_lock(&queue_lock);
         while(queue_cnt == 0){
@@ -74,6 +74,7 @@ void *worker(void *bs)
 	
 	    printf("Current Directory - %s, Buffer - %s\n", cwd, buffer);
 	    char filepath[1024];
+        memset(filepath, 0, 1024);
 	    strcat(filepath, cwd);
 	    strcat(filepath, buffer);
         
@@ -132,7 +133,7 @@ void *worker(void *bs)
 		fprintf(weblog, "%s:%d %s \"GET /%s\" %d %d\n", tmp->ip_add, tmp->port, time, filepath, success_code, totalsize); 
         fclose(weblog);
 		pthread_mutex_unlock(&log_lock);
-		//free(tmp)... if you dare
+		free(tmp);
     }
 }
 

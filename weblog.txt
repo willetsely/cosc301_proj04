@@ -1,1 +1,145 @@
 
+127.0.0.1:58439 Wed Nov 20 09:59:36 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58440 Wed Nov 20 09:59:36 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58441 Wed Nov 20 09:59:38 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58442 Wed Nov 20 09:59:38 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/2cd7387a.html" 200 2089
+127.0.0.1:58443 Wed Nov 20 09:59:38 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58444 Wed Nov 20 10:00:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58445 Wed Nov 20 10:00:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58446 Wed Nov 20 10:03:02 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ab97886e.html" 200 8421
+127.0.0.1:58447 Wed Nov 20 10:03:03 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/2cd7387a.html" 200 2089
+127.0.0.1:58448 Wed Nov 20 10:03:03 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58449 Wed Nov 20 10:03:03 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58450 Wed Nov 20 10:03:04 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58451 Wed Nov 20 10:03:04 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58452 Wed Nov 20 10:03:05 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58453 Wed Nov 20 10:03:05 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58454 Wed Nov 20 10:03:05 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58455 Wed Nov 20 10:03:06 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58456 Wed Nov 20 10:03:06 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58457 Wed Nov 20 10:03:06 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ab97886e.html" 200 8421
+127.0.0.1:58458 Wed Nov 20 10:03:06 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/f3314156.html" 200 1094
+127.0.0.1:58459 Wed Nov 20 10:03:07 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58460 Wed Nov 20 10:03:07 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58461 Wed Nov 20 10:06:06 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/2cd7387a.html" 200 2089
+127.0.0.1:58462 Wed Nov 20 10:06:07 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58463 Wed Nov 20 10:06:07 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/f3314156.html" 200 1094
+127.0.0.1:58464 Wed Nov 20 10:06:08 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58465 Wed Nov 20 10:06:08 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58466 Wed Nov 20 10:06:08 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58467 Wed Nov 20 10:06:09 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ab97886e.html" 200 8421
+127.0.0.1:58468 Wed Nov 20 10:06:09 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58469 Wed Nov 20 10:06:10 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58470 Wed Nov 20 10:06:11 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58471 Wed Nov 20 10:06:11 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ab97886e.html" 200 8421
+127.0.0.1:58472 Wed Nov 20 10:06:12 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/2cd7387a.html" 200 2089
+127.0.0.1:58473 Wed Nov 20 10:06:12 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58474 Wed Nov 20 10:06:13 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/f3314156.html" 200 1094
+127.0.0.1:58475 Wed Nov 20 10:06:14 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58476 Wed Nov 20 10:06:14 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58477 Wed Nov 20 10:06:14 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58478 Wed Nov 20 10:06:15 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58479 Wed Nov 20 10:06:15 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58480 Wed Nov 20 10:06:16 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58481 Wed Nov 20 10:06:16 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58482 Wed Nov 20 10:06:17 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58483 Wed Nov 20 10:06:18 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/2cd7387a.html" 200 2089
+127.0.0.1:58484 Wed Nov 20 10:06:18 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58485 Wed Nov 20 10:06:19 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58486 Wed Nov 20 10:06:19 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58487 Wed Nov 20 10:06:19 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58488 Wed Nov 20 10:06:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/2cd7387a.html" 200 2089
+127.0.0.1:58489 Wed Nov 20 10:06:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58490 Wed Nov 20 10:06:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58491 Wed Nov 20 10:06:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58492 Wed Nov 20 10:06:20 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58493 Wed Nov 20 10:06:21 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ab97886e.html" 200 8421
+127.0.0.1:58494 Wed Nov 20 10:06:21 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58495 Wed Nov 20 10:06:22 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
+127.0.0.1:58496 Wed Nov 20 10:06:22 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58497 Wed Nov 20 10:06:22 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/4e973a0f.html" 200 1857
+127.0.0.1:58498 Wed Nov 20 10:06:22 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58499 Wed Nov 20 10:06:23 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58500 Wed Nov 20 10:06:23 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58501 Wed Nov 20 10:06:24 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/f3314156.html" 200 1094
+127.0.0.1:58502 Wed Nov 20 10:06:25 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58503 Wed Nov 20 10:06:25 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/c542624d.html" 200 1436
+127.0.0.1:58504 Wed Nov 20 10:06:26 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58505 Wed Nov 20 10:06:26 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/9762df11.html" 200 4949
+127.0.0.1:58506 Wed Nov 20 10:06:26 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58507 Wed Nov 20 10:06:27 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/a1f3db09.html" 200 1254
+127.0.0.1:58508 Wed Nov 20 10:06:28 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/ecad4e3f.html" 200 1191
+127.0.0.1:58509 Wed Nov 20 10:06:28 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/92dc7485.html" 200 3953
+127.0.0.1:58510 Wed Nov 20 10:06:28 2013
+ "GET //home/cosc301/cosc301_proj04/testfiles/1527a2b3.html" 200 1282
