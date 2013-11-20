@@ -21,9 +21,9 @@ void signal_handler(int sig) {
 }
 request_t *head;
 request_t *tail;
-pthread_mutex_t queue_lock = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t log_lock = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t queue_cond = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t queue_lock;
+pthread_mutex_t log_lock;
+pthread_cond_t queue_cond;
 int queue_cnt = 0;
 
 void usage(const char *progname) {
@@ -80,13 +80,13 @@ void *worker(void *)
         {
             success_code = 200;
             int filesize = statinfo.st_size;
-
-            char filesizestr[10];   //cast filesize to string (char[])
-            sprintf(filesizestr, "%d", filesize);
             
-            char * http_200 = (HTTP_200,filesize);
+            char *http_200;
+            sprintf(http_200, HTTP_200, filesize);
+
             senddata(sock, http_200, strlen(http_200));
             totalsize = strlen(http_200);
+            totalsize += filesize;
 
             int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
             if(file_desc == -1) //open failed
@@ -100,9 +100,8 @@ void *worker(void *)
                 fprintf(stderr, "failed to read file %s\n", filepath);
                 continue;
             }
+            /////////////////////close file
             senddata(sock, read_buffer, filesize);
-			totalsize += filesize;
-
         }   
         else //file doens't exist
         {
@@ -131,6 +130,9 @@ void runserver(int numthreads, unsigned short serverport) {
     //////////////////////////////////////////////////
 
     // create your pool of threads here
+    pthread_mutex_init(&queue_lock, NULL);
+    pthread_mutex_init(&log_lock, NULL);
+    pthread_cond_init(&queue_cond, NULL);
 
     pthread_t threads[numthreads];
     int i = 0;
