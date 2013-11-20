@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall -pthread
 TARGET = webserver
-OBJS = main.o network.o
+OBJS = main.o network.o datastructures.o
 DEPS = network.h
 .PHONY : clean
 
