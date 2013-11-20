@@ -1,5 +1,4 @@
 #include "datastructures.h"
-//include a bunch of stuff
 
 //declare global variables
 extern request_t *head;
@@ -12,7 +11,7 @@ request_t *request_t_insert(int sock, char *ip_add, int port)
         return NULL;
     new->sock = sock;
     new->port = port;
-    new->ip_add = ip_add;
+    strcpy(new->ip_add, ip_add);
     new->next = head;
     return new;
 }
