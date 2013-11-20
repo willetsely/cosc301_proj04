@@ -38,7 +38,7 @@ void edit_filepath(char *path, int size)
 {
 	if (path[0] != '/')
 		return;
-	char buffer[size];
+	char *buffer[size];
 	int i;
 	for (i = 0; i < size + 1; i++)
 		buffer[i] = path[i + 1];
@@ -67,6 +67,7 @@ void *worker(void *)
 		char filepath[1024];		
 		if (!getrequest(sock, filepath, 1024))
 			edit_filepath(filepath, strlen(filepath));
+
 		else
 		{
 			fprintf(stderr, "failed to get request from socket %d\n", sock);
@@ -198,10 +199,20 @@ void runserver(int numthreads, unsigned short serverport) {
         }
     }
     //join threads//////////////////////////////////////////////////////////
-    
-    fprintf(stderr, "Server shutting down.\n");
+	for (i = 0; i < numthreads; i++)
+	{
+		pthread_join(threads[i], NULL)
+	}
+	
+	pthread_cond_destroy(&queue_cond);
+	pthread_mutex_destroy(&queue_lock);
+	pthread_mutex_destroy(&log_lock);    
+
+	
+	fprintf(stderr, "Server shutting down.\n");
         
     close(main_socket);
+	fclose(weblog);
 }
 
 
