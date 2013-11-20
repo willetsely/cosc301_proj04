@@ -64,7 +64,7 @@ void *worker(void)
         queue_cnt--;
         pthread_mutex_unlock(&queue_lock);
         
-		char filepath[1024];		
+		char filepath[1024];
 		if (!getrequest(sock, &filepath, 1024))
 			edit_filepath(&filepath, strlen(filepath));
 		else
