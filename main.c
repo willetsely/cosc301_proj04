@@ -195,6 +195,8 @@ void runserver(int numthreads, unsigned short serverport) {
 			char *address = inet_ntoa(client_address.sin_addr);
 			int port = ntohs(client_address.sin_port);
             head = request_t_insert(new_sock, address, port);
+            if(queue_cnt == 1)
+                tail = head;
             pthread_cond_signal(&queue_cond);
             pthread_mutex_unlock(&queue_lock);
         }
