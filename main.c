@@ -20,7 +20,7 @@ void signal_handler(int sig) {
     still_running = FALSE;
 }
 request_t *head;
-//request_t *tail;
+request_t *tail;
 pthread_mutex_t queue_lock;
 pthread_mutex_t log_lock;
 pthread_cond_t queue_cond;
@@ -49,39 +49,33 @@ void edit_filepath(char *path, int size)
 
 void *worker(void *bs)
 {
+    char cwd[1024];
+    getcwd(cwd,1024); //current working directory
     while(1)
     {
         pthread_mutex_lock(&queue_lock);
         while(queue_cnt == 0){
             pthread_cond_wait(&queue_cond, &queue_lock);
         }
-        //save info from the tail to local stack
-        /*
-        const int sock = tail->sock;
-        const int port = tail->port;
-        const char *ip = tail->ip_add;
-        request_t *tmp = tail;
-        tail = request_t_remove(head, tail); //free the old tail, reassign tail to new tail
-        free(tmp);
-        */
-        const int sock = head->sock;
-        const int port = head->port;
-        const char *ip = head->ip_add;
-        request_t *tmp = head;
-        head = request_t_remove(head, queue_cnt);
-        free(tmp);
+        //save info from the tail to local stack 
+        request_t *tmp = request_t_remove(); //cut off old tail, assign it to tmp
         queue_cnt--;
         pthread_mutex_unlock(&queue_lock);
         
-		char filepath[1024];		
-		if (!getrequest(sock, filepath, 1024))
-			edit_filepath(filepath, strlen(filepath));
+		char buffer[1024];		
+		if (!getrequest(tmp->sock, buffer, 1024))
+			edit_filepath(buffer, strlen(buffer));
 
 		else
 		{
-			fprintf(stderr, "failed to get request from socket %d\n", sock);
+			fprintf(stderr, "failed to get request from socket %d\n", tmp->sock);
 			continue;
 		}
+	
+	    printf("Current Directory - %s, Buffer - %s\n", cwd, buffer);
+	    char filepath[1024];
+	    strcat(filepath, cwd);
+	    strcat(filepath, buffer);
         
         struct stat statinfo;
         int success_code;
@@ -94,7 +88,7 @@ void *worker(void *bs)
             char http_200[strlen(HTTP_200) + 10];
             sprintf(http_200, HTTP_200, filesize);
 
-            senddata(sock, http_200, strlen(http_200));
+            senddata(tmp->sock, http_200, strlen(http_200));
             totalsize = strlen(http_200);
             totalsize += filesize;
 
@@ -110,11 +104,11 @@ void *worker(void *bs)
             {
                 if(bytes_read == 0)
                 {
-                    senddata(sock, read_buffer, sizeof(read_buffer));
+                    senddata(tmp->sock, read_buffer, sizeof(read_buffer));
                     break;
                 }
                 else{
-                    senddata(sock, read_buffer, 1024);}
+                    senddata(tmp->sock, read_buffer, 1024);}
                 bytes_read = read(file_desc, read_buffer, 1024);
             }
             if(bytes_read < 0)
@@ -124,21 +118,21 @@ void *worker(void *bs)
         else //file doens't exist
         {
             success_code = 404;
-            senddata(sock, HTTP_404, strlen(HTTP_404));
+            senddata(tmp->sock, HTTP_404, strlen(HTTP_404));
             totalsize = strlen(HTTP_404);
         }
 
-        close(sock);
+        close(tmp->sock);
 		
         time_t now = time(NULL);
 		char *time = ctime(&now);
 
 		pthread_mutex_lock(&log_lock);
 		FILE *weblog = fopen("weblog.txt", "a");
-		fprintf(weblog, "%s:%d %s \"GET /%s\" %d %d\n", ip, port, time, filepath, success_code, totalsize); 
+		fprintf(weblog, "%s:%d %s \"GET /%s\" %d %d\n", tmp->ip_add, tmp->port, time, filepath, success_code, totalsize); 
         fclose(weblog);
 		pthread_mutex_unlock(&log_lock);
-		
+		//free(tmp)... if you dare
     }
 }
 
@@ -203,15 +197,14 @@ void runserver(int numthreads, unsigned short serverport) {
             queue_cnt++;
 			char *address = inet_ntoa(client_address.sin_addr);
 			int port = ntohs(client_address.sin_port);
-            head = request_t_insert(new_sock, address, port, head);
-            /*if(queue_cnt == 1)
+            head = request_t_insert(new_sock, address, port);
+            if(queue_cnt == 1)
                 tail = head;
-            */
             pthread_cond_signal(&queue_cond);
             pthread_mutex_unlock(&queue_lock);
         }
     }
-    //join threads//////////////////////////////////////////////////////////
+    //join threads//////
 	for (i = 0; i < numthreads; i++)
 	{
 		pthread_join(threads[i], NULL);
