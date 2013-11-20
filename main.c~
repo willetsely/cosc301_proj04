@@ -33,7 +33,7 @@ void usage(const char *progname) {
     exit(0);
 }
 
-
+<<<<<<< HEAD
 void edit_filepath(char *path, int size)
 {
 	if (path[0] != '/')
@@ -44,10 +44,27 @@ void edit_filepath(char *path, int size)
 		buffer[i] = path[i + 1];
 	*path = buffer;
 	return;
-} 
+}
+		
 
+void worker()
+=======
+void log(int port, *ip,  int success_code)
+{
+	FILE *weblog = fopen("weblog.txt", "a");
+	
+	time_t now = time(NULL);
+    char *time = ctime(&now);
+	inet_ntoa((ip).sin_addr);
+	ntohs((port).sin_port);
+	
+	pthread_mutex_lock(&log_lock);
+	fprintf(weblog, "%s:%d %s \"GET /%s\" %s %d\n", ip, port, time, filename, success_code, size); 
+	pthread_mutex_unlock(&log_lock);
+}
 
 void worker(void)
+>>>>>>> 207c53c5474c7bfd9a2ca29343f35cbd7889d3aa
 {
     while(1)
     {
@@ -101,16 +118,6 @@ void worker(void)
             senddata(sock, HTTP_404, strlen(HTTP_404));
             continue;
         }
-		
-		time_t now = time(NULL);
-		char *time = ctime(&now);
-		
-		
-		pthread_mutex_lock(&log_lock);
-		FILE *weblog = fopen("weblog.txt", "a");
-		fprintf(weblog, "%s:%d %s \"GET /%s\" %s %d\n", ip, port, time, filename, success_code, size); 
-		pthread_mutex_unlock(&log_lock);
-		
     }
 }
 
@@ -168,13 +175,13 @@ void runserver(int numthreads, unsigned short serverport) {
             * when you're done.
             */
            ////////////////////////////////////////////////////////
-            pthread_mutex_lock(&queue_lock);
+            Pthread_mutex_lock(&queue_lock);
             queue_cnt++;
 			char *address = inet_ntoa(client_address.sin_addr);
 			int port = ntohs(client_address.sin_port);
             head = request_t_insert(new_sock, address, port);
-            pthread_cond_signal(&queue_cond);
-            pthread_mutex_unlock(&queue_lock);
+            Pthread_cond_signal(&queue_cond);
+            Pthread_mutex_unlock(&queue_lock);
         }
     }
     fprintf(stderr, "Server shutting down.\n");
