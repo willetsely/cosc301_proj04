@@ -101,6 +101,7 @@ void worker(void)
             }
             senddata(sock, read_buffer, filesize);
 			totalsize += filesize;
+
         }   
         else //file doens't exist
         {
@@ -131,7 +132,7 @@ void runserver(int numthreads, unsigned short serverport) {
     pthread_t threads[numthreads];
     int i = 0;
     for(;i < numthreads; i++)
-        pthread_create(&(threads[i]), NULL, worker(), NULL);
+        pthread_create(&(threads[i]), NULL, worker, NULL);
     //////////////////////////////////////////////////
 
     int main_socket = prepare_server_socket(serverport);

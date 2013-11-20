@@ -76,14 +76,13 @@ void worker(void)
         struct stat statinfo;
         int success_code;
         int totalsize; //totalsize used for the log
-
-        if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
+        if(stat(filepath, &statinfo) == 0) //if stat succeeds i.e. file exists
         {
             success_code = 200;
-            int filesize = statinfo->st_size;
+            int filesize = statinfo.st_size;
 
             char filesizestr[10];   //cast filesize to string (char[])
-            sprintf(filesizestr, "%d", filesize)
+            sprintf(filesizestr, "%d", filesize);
 
             senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
             totalsize = strlen(HTTP_200) + strlen(filesizestr);
@@ -101,6 +100,11 @@ void worker(void)
                 return;
             }
             senddata(sock, read_buffer, filesize);
+<<<<<<< HEAD
+			totalsize += filesize;
+=======
+            totalsize += filesize;
+>>>>>>> b7ef1853135257891496d50a28323d9151e08ca9
         }   
         else //file doens't exist
         {
@@ -110,8 +114,11 @@ void worker(void)
         }
 		
 		time_t now = time(NULL);
+<<<<<<< HEAD
 		char *time = ctime(&now);
-        totalsize += filesize;		
+=======
+		char *time = ctime(&now);		
+>>>>>>> b7ef1853135257891496d50a28323d9151e08ca9
 
 		pthread_mutex_lock(&log_lock);
 		FILE *weblog = fopen("weblog.txt", "a");
@@ -132,7 +139,7 @@ void runserver(int numthreads, unsigned short serverport) {
     pthread_t threads[numthreads];
     int i = 0;
     for(;i < numthreads; i++)
-        pthread_create(&(threads[i]), NULL, worker(), NULL);
+        pthread_create(&(threads[i]), NULL, worker, NULL);
     //////////////////////////////////////////////////
 
     int main_socket = prepare_server_socket(serverport);
