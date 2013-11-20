@@ -22,8 +22,9 @@ void signal_handler(int sig) {
 request_t *head;
 request_t *tail;
 pthread_mutex_t queue_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t log_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t queue_cond = PTHREAD_COND_INITIALIZER;
-int queue_cnt;
+int queue_cnt = 0;
 
 void usage(const char *progname) {
     fprintf(stderr, "usage: %s [-p port] [-t numthreads]\n", progname);
@@ -42,10 +43,9 @@ void edit_filepath(char *path, int size)
 		buffer[i] = path[i + 1];
 	*path = buffer;
 	return;
-}
-		
+} 
 
-void worker()
+void worker(void)
 {
     while(1)
     {
@@ -57,7 +57,7 @@ void worker()
         const int sock = tail->sock;
         const int port = tail->port;
         const char *ip = tail->ip;
-        //
+
         tail = request_t_remove(); //free the old tail, reassign tail to new tail
         queue_cnt--;
         pthread_mutex_unlock(&queue_lock);
@@ -75,8 +75,11 @@ void worker()
         if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
         {
             int filesize = statinfo->st_size;
-            char *filesize;
-            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesize));
+
+            char filesizestr[10];   //cast filesize to string (char[])
+            sprintf(filesizestr, "%d", filesize)
+
+            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
             int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
             if(file_desc == -1) //open failed
             {
@@ -94,6 +97,7 @@ void worker()
         else //file doens't exist
         {
             senddata(sock, HTTP_404, strlen(HTTP_404));
+            continue;
         }
     }
 }
@@ -103,11 +107,13 @@ void worker()
 
 void runserver(int numthreads, unsigned short serverport) {
     //////////////////////////////////////////////////
+
     // create your pool of threads here
+
     pthread_t threads[numthreads];
     int i = 0;
     for(;i < numthreads; i++)
-        pthread_create(&(threads[i]), NULL, (void *)worker, NULL);
+        pthread_create(&(threads[i]), NULL, worker(), NULL);
     //////////////////////////////////////////////////
 
     int main_socket = prepare_server_socket(serverport);
@@ -149,14 +155,14 @@ void runserver(int numthreads, unsigned short serverport) {
             * Don't forget to close the socket (in the worker thread)
             * when you're done.
             */
-            pthread_mutex_lock(&queue_lock);
+           ////////////////////////////////////////////////////////
+            Pthread_mutex_lock(&queue_lock);
             queue_cnt++;
-            head = request_t_insert(/*??????*/);
-            if(queue_cnt == 1)
-                tail = head;
-            pthread_cond_signal(&queue_cond);
-            pthread_mutex_unlock(&queue_lock);
-            ///////////////////////////////////
+			char *address = inet_ntoa(client_address.sin_addr);
+			int port = ntohs(client_address.sin_port);
+            head = request_t_insert(new_sock, address, port);
+            Pthread_cond_signal(&queue_cond);
+            Pthread_mutex_unlock(&queue_lock);
         }
     }
     fprintf(stderr, "Server shutting down.\n");
