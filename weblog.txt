@@ -1,2 +1,8 @@
 127.0.0.1:58813 Wed Nov 20 15:17:26 2013
  "GET //testfiles/a1f3db09.html" 404 26
+127.0.0.1:58837 Wed Nov 20 15:41:33 2013
+ "GET //testfiles/a1f3db09.html" 404 26
+127.0.0.1:58842 Wed Nov 20 15:46:15 2013
+ "GET //testfiles/4e973a0f.html" 404 26
+127.0.0.1:58853 Wed Nov 20 16:14:46 2013
+ "GET //testfiles/9762df11.html" 404 26

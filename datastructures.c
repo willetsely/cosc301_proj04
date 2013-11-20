@@ -10,7 +10,7 @@ request_t *request_t_insert(int sock, char *ip_add, int port)
     if(new == NULL)
         return NULL;
     new->sock = sock;
-    new->port = port;
+    new.port = port;
     strcpy(new->ip_add, ip_add);
     new->next = head;
     return new;

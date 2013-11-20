@@ -11,7 +11,7 @@
 typedef struct request {
     int sock;
     int port;
-    char *ip_add;
+    char ip_add[32];
     struct request *next;
 } request_t;
 

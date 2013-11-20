@@ -82,7 +82,7 @@ void *worker(void *bs)
             success_code = 200;
             int filesize = statinfo.st_size;
             
-            char *http_200;
+            char http_200[strlen(HTTP_200) + 10];
             sprintf(http_200, HTTP_200, filesize);
 
             senddata(sock, http_200, strlen(http_200));
