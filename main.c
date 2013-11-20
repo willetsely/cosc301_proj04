@@ -55,8 +55,11 @@ void worker()
         if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
         {
             int filesize = statinfo->st_size;
-            char *filesize;
-            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesize));
+
+            char filesizestr[10];   //cast filesize to string (char[])
+            sprintf(filesizestr, "%d", filesize)
+
+            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
             int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
             if(file_desc == -1) //open failed
             {
