@@ -58,7 +58,7 @@ void worker(void)
         //save info from the tail to local stack
         const int sock = tail->sock;
         const int port = tail->port;
-        const char *ip = tail->ip;
+        const char *ip = tail->ip_add;
 
         tail = request_t_remove(); //free the old tail, reassign tail to new tail
         queue_cnt--;
@@ -74,14 +74,20 @@ void worker(void)
 		}
         
         struct stat statinfo;
+        int success_code;
+        int totalsize; //totalsize used for the log
+
         if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
         {
+            success_code = 200;
             int filesize = statinfo->st_size;
 
             char filesizestr[10];   //cast filesize to string (char[])
             sprintf(filesizestr, "%d", filesize)
 
             senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
+            totalsize = strlen(HTTP_200) + strlen(filesizestr);
+
             int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
             if(file_desc == -1) //open failed
             {
@@ -98,17 +104,18 @@ void worker(void)
         }   
         else //file doens't exist
         {
+            success_code = 404;
             senddata(sock, HTTP_404, strlen(HTTP_404));
-            continue;
+            totalsize = strlen(HTTP_404);
         }
 		
 		time_t now = time(NULL);
 		char *time = ctime(&now);
-		
-		
+        totalsize += filesize;		
+
 		pthread_mutex_lock(&log_lock);
 		FILE *weblog = fopen("weblog.txt", "a");
-		fprintf(weblog, "%s:%d %s \"GET /%s\" %s %d\n", ip, port, time, filename, success_code, size); 
+		fprintf(weblog, "%s:%d %s \"GET /%s\" %s %d\n", ip, port, time, filepath, success_code, totalsize); 
 		pthread_mutex_unlock(&log_lock);
 		
     }
