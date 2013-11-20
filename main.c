@@ -32,7 +32,7 @@ void usage(const char *progname) {
     exit(0);
 }
 
-void log(int port, char *ip, char *filename, int success_code)
+void log(int port, *ip,  int success_code)
 {
 	FILE *weblog = fopen("weblog.txt", "a");
 	
@@ -41,9 +41,9 @@ void log(int port, char *ip, char *filename, int success_code)
 	inet_ntoa((ip).sin_addr);
 	ntohs((port).sin_port);
 	
-	Pthread_mutex_lock(&queue_lock);
+	pthread_mutex_lock(&log_lock);
 	fprintf(weblog, "%s:%d %s \"GET /%s\" %s %d\n", ip, port, time, filename, success_code, size); 
-	Pthread_mutex_unlock(&queue_lock);
+	pthread_mutex_unlock(&log_lock);
 }
 
 void worker(void)
@@ -108,7 +108,9 @@ void runserver(int numthreads, unsigned short serverport) {
            ////////////////////////////////////////////////////////
             Pthread_mutex_lock(&queue_lock);
             queue_cnt++;
-            request_t_insert(/*filename*/, new_sock);\
+			char *address = inet_ntoa(client_address.sin_addr);
+			int port = ntohs(client_address.sin_port);
+            head = request_t_insert(new_sock, address, port);
             Pthread_cond_signal(&queue_cond);
             Pthread_mutex_unlock(&queue_lock);
         }

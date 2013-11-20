@@ -4,21 +4,14 @@
 extern request_t *head;
 extern request_t *tail;
 
-typedef struct request {
-    char *filename;
-    int socket;
-    char *ip_add;
-    int port;
-    struct request *next;
-} request_t;
-
-request_t *request_t_insert(char *filename, int socket,)
+request_t *request_t_insert(int sock, char *ip_add, int port)
 {
     request_t *new = malloc(sizeof(request_t *));
     if(new == NULL)
         return NULL;
-    new->filename = filename;
-    new->socket = socket;
+    new->sock = sock;
+    new->port = port;
+    new->ip_add = ip_add;
     new->next = head;
     return new;
 }
