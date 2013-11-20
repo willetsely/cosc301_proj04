@@ -84,7 +84,7 @@ void worker(void)
             char filesizestr[10];   //cast filesize to string (char[])
             sprintf(filesizestr, "%d", filesize);
 
-            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
+            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200,filesizestr));
             totalsize = strlen(HTTP_200) + strlen(filesizestr);
 
             int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
