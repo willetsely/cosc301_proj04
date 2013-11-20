@@ -94,14 +94,22 @@ void *worker(void *)
                 fprintf(stderr, "failed to open file %s\n", filepath);
                 continue;
             }
-            char *read_buffer[filesize];
-            if(read(file_desc, read_buffer, filesize) == -1) //read failed
+            char read_buffer[1024];
+            int bytes_read = read(file_desc, read_buffer, 1024);
+            while(bytes_read >= 0)
             {
-                fprintf(stderr, "failed to read file %s\n", filepath);
-                continue;
+                if(bytes_read == 0)
+                {
+                    senddata(sock, read_buffer, sizeof(read_buffer));
+                    break;
+                }
+                else{
+                    senddata(sock, read_buffer, 1024);}
+                bytes_read = read(file_desc, read_buffer, 1024);
             }
-            /////////////////////close file
-            senddata(sock, read_buffer, filesize);
+            if(bytes_read < 0)
+                fprintf(stderr, "read fail for file %s\n", filepath);
+            close(file_desc);
         }   
         else //file doens't exist
         {
@@ -109,10 +117,10 @@ void *worker(void *)
             senddata(sock, HTTP_404, strlen(HTTP_404));
             totalsize = strlen(HTTP_404);
         }
+
+        close(sock);
 		
-        //need to close socket///////////////////////////////////////////
-    
-		time_t now = time(NULL);
+        time_t now = time(NULL);
 		char *time = ctime(&now);
 
 		pthread_mutex_lock(&log_lock);
