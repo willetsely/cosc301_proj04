@@ -15,4 +15,6 @@ typedef struct request {
     struct request *next;
 } request_t;
 
+request_t *request_t_insert(int, char *, int);
+request_t *request_t_remove();
 #endif // __DATASTRUCTURES_H__
