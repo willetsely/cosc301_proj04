@@ -42,12 +42,12 @@ void edit_filepath(char *path, int size)
 	int i;
 	for (i = 0; i < size + 1; i++)
 		buffer[i] = path[i + 1];
-	*path = buffer;
+	path = buffer;
 	return;
 } 
 
 
-void *worker(void)
+void *worker(void *)
 {
     while(1)
     {
@@ -64,13 +64,14 @@ void *worker(void)
         queue_cnt--;
         pthread_mutex_unlock(&queue_lock);
         
-		char filepath[1024];
-		if (!getrequest(sock, &filepath, 1024))
-			edit_filepath(&filepath, strlen(filepath));
+		char filepath[1024];		
+		if (!getrequest(sock, filepath, 1024))
+			edit_filepath(filepath, strlen(filepath));
+
 		else
 		{
 			fprintf(stderr, "failed to get request from socket %d\n", sock);
-			return;
+			continue;
 		}
         
         struct stat statinfo;
@@ -83,21 +84,22 @@ void *worker(void)
 
             char filesizestr[10];   //cast filesize to string (char[])
             sprintf(filesizestr, "%d", filesize);
-
-            senddata(sock, (HTTP_200,filesize), strlen((HTTP_200,filesizestr)));
-            totalsize = strlen(HTTP_200) + strlen(filesizestr);
+            
+            char * http_200 = (HTTP_200,filesize);
+            senddata(sock, http_200, strlen(http_200));
+            totalsize = strlen(http_200);
 
             int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
             if(file_desc == -1) //open failed
             {
                 fprintf(stderr, "failed to open file %s\n", filepath);
-                return;
+                continue;
             }
             char *read_buffer[filesize];
             if(read(file_desc, read_buffer, filesize) == -1) //read failed
             {
                 fprintf(stderr, "failed to read file %s\n", filepath);
-                return;
+                continue;
             }
             senddata(sock, read_buffer, filesize);
 			totalsize += filesize;
@@ -110,6 +112,8 @@ void *worker(void)
             totalsize = strlen(HTTP_404);
         }
 		
+        //need to close socket///////////////////////////////////////////
+    
 		time_t now = time(NULL);
 		char *time = ctime(&now);
 
@@ -184,6 +188,8 @@ void runserver(int numthreads, unsigned short serverport) {
             pthread_mutex_unlock(&queue_lock);
         }
     }
+    //join threads//////////////////////////////////////////////////////////
+    
     fprintf(stderr, "Server shutting down.\n");
         
     close(main_socket);
