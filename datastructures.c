@@ -8,7 +8,8 @@ extern request_t *tail;
 typedef struct request {
     char *filename;
     int socket;
-    //log entry
+    char *ip_add;
+    int port;
     struct request *next;
 } request_t;
 
@@ -20,7 +21,6 @@ request_t *request_t_insert(char *filename, int socket,)
     new->filename = filename;
     new->socket = socket;
     new->next = head;
-    // new->log entry = ? (do we need to malloc?)
     return new;
 }
 
