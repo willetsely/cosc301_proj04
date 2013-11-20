@@ -22,8 +22,9 @@ void signal_handler(int sig) {
 request_t *head;
 request_t *tail;
 pthread_mutex_t queue_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t log_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t queue_cond = PTHREAD_COND_INITIALIZER;
-int queue_cnt;
+int queue_cnt = 0;
 
 void usage(const char *progname) {
     fprintf(stderr, "usage: %s [-p port] [-t numthreads]\n", progname);
@@ -48,11 +49,52 @@ void log(int port, *ip,  int success_code)
 
 void worker(void)
 {
-    Pthread_mutex_lock(&queue_lock);
-    while(queue_cnt < 1)
-        Pthread_cond_wait(&queue_cond, &queue_lock);
-    //do stuff
-    Pthread_mutex_unlock(&queue_lock);
+    while(1)
+    {
+        pthread_mutex_lock(&queue_lock);
+        while(queue_cnt == 0){
+            pthread_cond_wait(&queue_cond, &queue_lock);
+        }
+        //save info from the tail to local stack
+        const int sock = tail->sock;
+        const int port = tail->port;
+        const char *ip = tail->ip;
+
+        tail = request_t_remove(); //free the old tail, reassign tail to new tail
+        queue_cnt--;
+        pthread_mutex_unlock(&queue_lock);
+        
+        //respond to request
+        //handle the whole slash, file directory issue
+        struct stat statinfo;
+        if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
+        {
+            int filesize = statinfo->st_size;
+
+            char filesizestr[10];   //cast filesize to string (char[])
+            sprintf(filesizestr, "%d", filesize)
+
+            senddata(sock, (HTTP_200,filesize), strlen(HTTP_200) + strlen(filesizestr));
+            int file_desc = open(filepath, O_RDONLY); //returns the file descriptor
+            if(file_desc == -1) //open failed
+            {
+                fprintf(stderr, "failed to open file %s\n", filepath);
+                return;
+            }
+            char *read_buffer[filesize];
+            if(read(file_desc, read_buffer, filesize) == -1) //read failed
+            {
+                fprintf(stderr, "failed to read file %s\n", filepath);
+                return;
+            }
+            senddata(sock, read_buffer, filesize);
+        }   
+        else //file doens't exist
+        {
+            senddata(sock, HTTP_404, strlen(HTTP_404));
+            continue;
+        }
+    }
 }
 
 void runserver(int numthreads, unsigned short serverport) {
@@ -60,11 +102,11 @@ void runserver(int numthreads, unsigned short serverport) {
 
     // create your pool of threads here
 
-    //////////////////////////////////////////////////
     pthread_t threads[numthreads];
     int i = 0;
     for(;i < numthreads; i++)
-        pthread_create(&(threads[i]), NULL, (void *)worker, NULL);
+        pthread_create(&(threads[i]), NULL, worker(), NULL);
+    //////////////////////////////////////////////////
 
     int main_socket = prepare_server_socket(serverport);
     if (main_socket < 0) {
