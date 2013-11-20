@@ -32,19 +32,6 @@ void usage(const char *progname) {
     exit(0);
 }
 
-void edit_filepath(char *path, int size)
-{
-	if (path[0] != '/')
-		return;
-	char buffer[size];
-	int i;
-	for (i = 0; i < size + 1; i++)
-		buffer[i] = path[i + 1];
-	*path = buffer;
-	return;
-}
-		
-
 void worker()
 {
     while(1)
@@ -62,15 +49,8 @@ void worker()
         queue_cnt--;
         pthread_mutex_unlock(&queue_lock);
         
-		char filepath[1024];		
-		if (!getrequest(sock, &filepath, 1024))
-			edit_filepath(&filepath, strlen(filepath));
-		else
-		{
-			fprintf(stderr, "failed to get request from socket %d\n", sock);
-			return;
-		}
-        
+        //respond to request
+        //handle the whole slash, file directory issue
         struct stat statinfo;
         if(stat(filepath, statinfo) == 0) //if stat succeeds i.e. file exists
         {
@@ -97,9 +77,6 @@ void worker()
         }
     }
 }
-
-
-	
 
 void runserver(int numthreads, unsigned short serverport) {
     //////////////////////////////////////////////////
