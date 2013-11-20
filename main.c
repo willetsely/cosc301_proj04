@@ -38,7 +38,7 @@ void edit_filepath(char *path, int size)
 {
 	if (path[0] != '/')
 		return;
-	char buffer[size];
+	char *buffer[size];
 	int i;
 	for (i = 0; i < size + 1; i++)
 		buffer[i] = path[i + 1];
