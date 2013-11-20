@@ -47,7 +47,7 @@ void edit_filepath(char *path, int size)
 } 
 
 
-void worker(void)
+void *worker(void)
 {
     while(1)
     {
