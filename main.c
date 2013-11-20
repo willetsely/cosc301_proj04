@@ -20,7 +20,7 @@ void signal_handler(int sig) {
     still_running = FALSE;
 }
 request_t *head;
-request_t *tail;
+//request_t *tail;
 pthread_mutex_t queue_lock;
 pthread_mutex_t log_lock;
 pthread_cond_t queue_cond;
@@ -56,11 +56,20 @@ void *worker(void *bs)
             pthread_cond_wait(&queue_cond, &queue_lock);
         }
         //save info from the tail to local stack
+        /*
         const int sock = tail->sock;
         const int port = tail->port;
         const char *ip = tail->ip_add;
-
-        tail = request_t_remove(); //free the old tail, reassign tail to new tail
+        request_t *tmp = tail;
+        tail = request_t_remove(head, tail); //free the old tail, reassign tail to new tail
+        free(tmp);
+        */
+        const int sock = head->sock;
+        const int port = head->port;
+        const char *ip = head->ip_add;
+        request_t *tmp = head;
+        head = request_t_remove(head, queue_cnt);
+        free(tmp);
         queue_cnt--;
         pthread_mutex_unlock(&queue_lock);
         
@@ -194,9 +203,10 @@ void runserver(int numthreads, unsigned short serverport) {
             queue_cnt++;
 			char *address = inet_ntoa(client_address.sin_addr);
 			int port = ntohs(client_address.sin_port);
-            head = request_t_insert(new_sock, address, port);
-            if(queue_cnt == 1)
+            head = request_t_insert(new_sock, address, port, head);
+            /*if(queue_cnt == 1)
                 tail = head;
+            */
             pthread_cond_signal(&queue_cond);
             pthread_mutex_unlock(&queue_lock);
         }
