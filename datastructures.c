@@ -1,3 +1,4 @@
+#include "datastructures.h"
 //include a bunch of stuff
 
 //declare global variables

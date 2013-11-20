@@ -47,7 +47,7 @@ void edit_filepath(char *path, int size)
 } 
 
 
-void *worker(void *)
+void *worker(void *bs)
 {
     while(1)
     {
@@ -126,7 +126,8 @@ void *worker(void *)
 
 		pthread_mutex_lock(&log_lock);
 		FILE *weblog = fopen("weblog.txt", "a");
-		fprintf(weblog, "%s:%d %s \"GET /%s\" %s %d\n", ip, port, time, filepath, success_code, totalsize); 
+		fprintf(weblog, "%s:%d %s \"GET /%s\" %d %d\n", ip, port, time, filepath, success_code, totalsize); 
+        fclose(weblog);
 		pthread_mutex_unlock(&log_lock);
 		
     }
@@ -201,7 +202,7 @@ void runserver(int numthreads, unsigned short serverport) {
     //join threads//////////////////////////////////////////////////////////
 	for (i = 0; i < numthreads; i++)
 	{
-		pthread_join(threads[i], NULL)
+		pthread_join(threads[i], NULL);
 	}
 	
 	pthread_cond_destroy(&queue_cond);
@@ -212,7 +213,6 @@ void runserver(int numthreads, unsigned short serverport) {
 	fprintf(stderr, "Server shutting down.\n");
         
     close(main_socket);
-	fclose(weblog);
 }
 
 
